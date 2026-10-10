@@ -1,0 +1,25 @@
+{
+  "name": "flo",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Flo - pencatat siklus menstruasi berbasis web, data tersimpan lokal di perangkat.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test \"src/lib/__tests__/*.test.js\"",
+    "test:e2e": "node src/tests/e2e-react.mjs",
+    "audit:ui": "node src/tests/ui-audit.mjs"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.4"
+  }
+}

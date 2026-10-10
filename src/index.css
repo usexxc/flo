@@ -1,0 +1,166 @@
+/* ==========================================================================
+   Flo — design tokens & utilitas Tailwind v4.
+   Palet sama dengan versi vanilla (berry/plum/sage/lavender + netral),
+   dipindah ke @theme supaya bisa dipakai sebagai class Tailwind biasa.
+   ========================================================================== */
+@import 'tailwindcss';
+
+@theme {
+  /* Warna inti */
+  --color-berry: #a63d69;
+  --color-berry-dark: #7c2a4c;
+  --color-berry-soft: #f7e4ec;
+  --color-berry-tint: #fdf1f5;
+  --color-plum: #6b4a7e;
+  --color-plum-soft: #ede6f3;
+  --color-peach: #f0a183;
+  --color-peach-soft: #fdefe8;
+  --color-sage: #6fa98c;
+  --color-sage-soft: #e7f2ec;
+  --color-sage-dark: #2f6a4a;
+  --color-lav: #8e7bb5;
+  --color-lav-soft: #eeeaf7;
+  --color-amber: #9c5a2c;
+  --color-amber-soft: #fbede0;
+  --color-blue: #3f6995;
+  --color-blue-soft: #e8f0f8;
+
+  /* Netral */
+  --color-ink: #2c2231;
+  --color-ink-2: #5b4f62;
+  --color-ink-3: #6e6376;
+  --color-line: #ede6ea;
+  --color-line-2: #e1d7de;
+  --color-surface: #ffffff;
+  --color-surface-2: #fbf7f9;
+  --color-bg: #faf6f8;
+
+  /* Status */
+  --color-danger: #c0392b;
+  --color-danger-soft: #fbe9e7;
+  --color-ok: #2f6a4a;
+
+  /* Radius */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+
+  /* Bayangan */
+  --shadow-soft-1: 0 1px 2px rgba(44, 34, 49, 0.05), 0 2px 8px rgba(44, 34, 49, 0.04);
+  --shadow-soft-2: 0 4px 14px rgba(44, 34, 49, 0.07), 0 12px 34px rgba(44, 34, 49, 0.06);
+  --shadow-soft-3: 0 18px 60px rgba(44, 34, 49, 0.18);
+
+  /* Font */
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ---------- Font Inter (di-host lokal, tanpa request ke pihak ketiga) ---------- */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Inter'), local('Inter Variable');
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-bg);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Fokus keyboard yang konsisten dan terlihat */
+:focus-visible {
+  outline: 3px solid rgba(166, 61, 105, 0.4);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Scrollbar halus untuk carousel wawasan & daftar panjang */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-2) transparent;
+}
+.thin-scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-line-2);
+  border-radius: 99px;
+}
+
+/* Animasi masuk halaman / kartu */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anim-fade-up {
+  animation: fade-up 0.28s cubic-bezier(0.32, 0.72, 0.28, 1) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-fade-in {
+  animation: fade-in 0.2s cubic-bezier(0.32, 0.72, 0.28, 1) both;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anim-pop-in {
+  animation: pop-in 0.26s cubic-bezier(0.32, 0.72, 0.28, 1) both;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.anim-spin-slow {
+  animation: spin-slow 1.15s linear infinite;
+  transform-origin: 60px 60px;
+}
+
+/* Hormati preferensi pengguna yang tidak ingin animasi */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

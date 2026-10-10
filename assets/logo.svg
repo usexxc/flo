@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Logo Flo">
+  <circle cx="24" cy="24" r="22" fill="#FDF1F5"/>
+  <circle cx="24" cy="24" r="15.5" fill="none" stroke="#A63D69" stroke-width="2.4"/>
+  <path d="M24 8.5c5.2 4.4 8 9.4 8 15.5S29.2 35.1 24 39.5" fill="none" stroke="#6B4A7E" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M24 8.5c-5.2 4.4-8 9.4-8 15.5s2.8 11.1 8 15.5" fill="none" stroke="#6FA98C" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="24" cy="24" r="4.6" fill="#A63D69"/>
+</svg>
