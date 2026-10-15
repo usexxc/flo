@@ -8,8 +8,9 @@ import { Icon } from '../components/Icon.jsx';
 import { Card, CardHead, Button, Eyebrow, Notice, SectionTitle, cx } from '../components/ui.jsx';
 import { CycleRing } from '../components/CycleRing.jsx';
 import { MiniCalendar } from '../components/MiniCalendar.jsx';
-import { parseISO, formatLong, formatFull, humanDays as humanDaysFn, monthName } from '../lib/util.js';
+import { parseISO, formatLong, formatFull, humanDays as humanDaysFn, monthName, toISO } from '../lib/util.js';
 import { dueReminders } from '../lib/reminder.js';
+import { todosForDay, sortTodos, toggleTodo } from '../lib/todos.js';
 
 /** ISO 'YYYY-MM-DD' → '12 Okt'. */
 function formatShort(iso) {
@@ -37,7 +38,7 @@ const CONFIDENCE_LABEL = {
  * @param {Date} p.today
  * @param {(tab:string)=>void} p.onOpenLog
  */
-export default function DashboardPage({ state, d, today, onOpenLog, onNavigate }) {
+export default function DashboardPage({ state, d, today, onOpenLog, onNavigate, onMutate }) {
   const { stats, prediction, info, range, todayLog, todaySymptoms } = d;
   const hasData = state.periods.length > 0;
 
@@ -130,6 +131,9 @@ export default function DashboardPage({ state, d, today, onOpenLog, onNavigate }
           </button>
         </div>
       </section>
+
+      {/* Aktivitas hari ini: maksimal tiga tugas belum selesai, bisa dicentang di sini */}
+      <TodayTodos state={state} today={today} onMutate={onMutate} onNavigate={onNavigate} />
 
       {/* Kalender + cincin */}
       <div className="grid gap-4 lg:grid-cols-[1.35fr_1fr] lg:gap-5">
@@ -358,6 +362,64 @@ function Pill({ icon, label, value }) {
 }
 
 /** Keadaan kosong ketika belum ada catatan periode. */
+/** Maksimal tugas yang ditampilkan di dashboard. */
+const TODAY_TODO_LIMIT = 3;
+
+/**
+ * Kartu "Aktivitas Hari Ini" di dashboard: hingga tiga tugas hari ini yang belum
+ * selesai. Bisa dicentang langsung tanpa membuka halaman Todo List.
+ * Tidak menampilkan apa-apa bila tidak ada tugas hari ini, supaya tidak
+ * mengambil perhatian dari perkiraan haid.
+ */
+function TodayTodos({ state, today, onMutate, onNavigate }) {
+  // `today` dari App berupa Date; data tugas memakai string ISO lokal (YYYY-MM-DD).
+  const todayKey = toISO(today);
+  const todos = state.todos || [];
+  const dayTodos = todosForDay(todos, todayKey);
+  const open = sortTodos(dayTodos.filter((t) => !t.done));
+  const shown = open.slice(0, TODAY_TODO_LIMIT);
+  const doneCount = dayTodos.filter((t) => t.done).length;
+  if (todos.length === 0 || (open.length === 0 && doneCount === 0)) return null;
+
+  const rest = open.length - shown.length;
+  return (
+    <Card data-testid="today-todos">
+      <CardHead
+        title="Aktivitas Hari Ini"
+        icon="check"
+        hint={open.length
+          ? `${open.length} tugas lagi untuk diselesaikan.`
+          : 'Semua aktivitas hari ini sudah selesai.'}
+        action={(
+          <Button variant="ghost" size="sm" icon="arrowRight" onClick={() => onNavigate('todo')}>
+            Lihat Semua
+          </Button>
+        )}
+      />
+      {shown.length ? (
+        <ul className="grid gap-2">
+          {shown.map((t) => (
+            <li key={t.id} className="flex items-center gap-3 rounded-[16px] border border-line bg-surface-2 px-3.5 py-2.5">
+              <input
+                type="checkbox"
+                className="h-5 w-5 shrink-0 accent-berry"
+                checked={false}
+                aria-label={`Tandai selesai: ${t.title}`}
+                onChange={() => onMutate((s) => { s.todos = toggleTodo(s.todos || [], t.id, todayKey); })}
+              />
+              <span className="min-w-0 flex-1 break-words text-[0.9375rem] font-bold text-ink">{t.title}</span>
+              {t.time ? <span className="shrink-0 text-[0.8125rem] font-semibold text-ink-3">{t.time}</span> : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {rest > 0 ? (
+        <p className="mt-2 text-[0.8125rem] font-semibold text-ink-3">+{rest} tugas lainnya di halaman Todo List.</p>
+      ) : null}
+    </Card>
+  );
+}
+
 function EmptyDashboard({ onOpenLog }) {
   return (
     <div className="pt-6">

@@ -3,7 +3,7 @@
 import http from 'node:http';
 
 const CDP_PORT = Number(process.argv[2] || 9223);
-const APP = process.argv[3] || 'http://127.0.0.1:8142/';
+const APP = process.argv[3] || 'http://127.0.0.1:8140/';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const getJson = (path, method = 'GET') => new Promise((resolve, reject) => {

@@ -10,7 +10,7 @@
  * pasangan teks di atas gradien dilewati (bukan kegagalan nyata).
  */
 const CDP_PORT = process.env.CDP_PORT || '9223';
-const URL = process.argv[2] || `http://127.0.0.1:8142/?audit=1`;
+const URL = process.argv[2] || `http://127.0.0.1:8140/?audit=1`;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /**

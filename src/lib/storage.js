@@ -18,6 +18,7 @@
  */
 
 import { uid, todayISO } from './util.js';
+import { normalizeTodos } from './todos.js';
 
 /** Key lama sebelum pemisahan multi-key. */
 export const STORAGE_KEY = 'flo.data.v1';
@@ -32,6 +33,7 @@ export const KEYS = {
   settings: 'flo_settings',
   onboarding: 'flo_onboarding_completed',
   logs: 'flo_logs',
+  todos: 'flo_todos',
 };
 
 /** Daftar seluruh key Flo di LocalStorage (untuk pengujian & reset). */
@@ -73,6 +75,7 @@ const MIGRATED_FLAG = 'migratedFromLegacy';
  * @property {import('./cycle.js').Period[]} periods
  * @property {Object[]} symptoms
  * @property {Object[]} dailyLogs
+ * @property {import('./todos.js').Todo[]} todos
  * @property {Object[]} cycles cache siklus yang sudah dihitung
  * @property {string[]} notified penanda pengingat yang sudah tampil
  */
@@ -113,6 +116,7 @@ export function defaultState() {
     periods: [],
     symptoms: [],
     dailyLogs: [],
+    todos: [],
     cycles: [],
     notified: [],
   };
@@ -269,6 +273,7 @@ export function normalize(raw) {
     dailyLogs: Array.isArray(s.dailyLogs)
       ? s.dailyLogs.map(normalizeDailyLog).filter(Boolean)
       : [],
+    todos: normalizeTodos(s.todos),
     cycles: Array.isArray(s.cycles) ? s.cycles : [],
     notified: Array.isArray(s.notified) ? s.notified : [],
   };
@@ -287,6 +292,7 @@ export function loadState() {
     periods: readKey(KEYS.periods, []),
     symptoms: readKey(KEYS.symptoms, []),
     dailyLogs: readKey(KEYS.logs, []),
+    todos: readKey(KEYS.todos, []),
     cycles: readKey(KEYS.cycles, []),
     notified: Array.isArray(settings.notified) ? settings.notified : [],
   });
@@ -309,6 +315,7 @@ export function saveState(state) {
   ok = writeKey(KEYS.symptoms, state.symptoms) && ok;
   ok = writeKey(KEYS.cycles, state.cycles) && ok;
   ok = writeKey(KEYS.logs, state.dailyLogs) && ok;
+  ok = writeKey(KEYS.todos, state.todos) && ok;
   ok = writeKey(KEYS.settings, settings) && ok;
   if (state.profile && state.profile.onboarded) {
     ok = writeKey(KEYS.onboarding, true) && ok;

@@ -15,6 +15,7 @@ import CalendarPage from './pages/CalendarPage.jsx';
 import HistoryPage from './pages/HistoryPage.jsx';
 import InsightPage from './pages/InsightPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
+import TodoPage from './pages/TodoPage.jsx';
 
 /** Tab yang sah pada form Catat. */
 const LOG_TABS = ['period', 'symptoms', 'daily'];
@@ -30,7 +31,7 @@ function resolveLogTab(tab) {
 }
 
 /** Halaman yang dikenali aplikasi (harus cocok dengan PAGES di AppShell). */
-const PAGE_IDS = ['dashboard', 'calendar', 'log', 'history', 'insight', 'settings'];
+const PAGE_IDS = ['dashboard', 'calendar', 'log', 'history', 'todo', 'insight', 'settings'];
 
 /**
  * Baca halaman dari hash (`#/kalender`, dst.). Jatuh ke Beranda bila hash
@@ -136,6 +137,7 @@ export default function App() {
           today={today}
           onOpenLog={openLog}
           onNavigate={setPage}
+          onMutate={actions.mutate}
         />
       ) : null}
       {page === 'calendar' ? (
@@ -146,6 +148,9 @@ export default function App() {
       ) : null}
       {page === 'history' ? (
         <HistoryPage state={state} onMutate={actions.mutate} toast={showToast} />
+      ) : null}
+      {page === 'todo' ? (
+        <TodoPage state={state} onMutate={actions.mutate} toast={showToast} />
       ) : null}
       {page === 'insight' ? (
         <InsightPage state={state} d={derived} />

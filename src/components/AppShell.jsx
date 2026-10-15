@@ -9,6 +9,7 @@ export const PAGES = [
   { id: 'calendar', label: 'Kalender', icon: 'calendar' },
   { id: 'log', label: 'Catat', icon: 'plus', primary: true },
   { id: 'history', label: 'Riwayat', icon: 'history' },
+  { id: 'todo', label: 'To-do', icon: 'check' },
   { id: 'insight', label: 'Wawasan', icon: 'spark' },
   { id: 'settings', label: 'Pengaturan', icon: 'gear' },
 ];
@@ -65,7 +66,7 @@ export function AppShell({ page, onNavigate, onQuick, children }) {
       {/* Navigasi bawah (mobile) */}
       <nav className="lg:hidden fixed inset-x-0 bottom-0 z-60 border-t border-line bg-white/96 backdrop-blur-xl pb-[calc(env(safe-area-inset-bottom))]" aria-label="Navigasi bawah">
         <div className="grid grid-cols-5">
-          {PAGES.filter((p) => !p.primary).slice(0, 5).map((p) => (
+          {PAGES.filter((p) => !p.primary && p.id !== 'insight').map((p) => (
             <button
               key={p.id}
               type="button"
